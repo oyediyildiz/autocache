@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/golang/groupcache"
 	"github.com/hashicorp/memberlist"
+	"github.com/oyediyildiz/groupcache/v2"
 )
 
 var _ memberlist.EventDelegate = &Autocache{}
@@ -109,12 +109,6 @@ func New(o *Options) (*Autocache, error) {
 	gcSelf := ac.groupcacheURL(ac.self)
 	ac.logger.Printf("autocache: groupcache self: %s options: %+v", gcSelf, poolOptions)
 	ac.GroupcachePool = groupcache.NewHTTPPoolOpts(gcSelf, poolOptions)
-	if o.PoolTransportFn != nil {
-		ac.GroupcachePool.Transport = o.PoolTransportFn
-	}
-	if o.PoolContext != nil {
-		ac.GroupcachePool.Context = o.PoolContext
-	}
 	return &ac, nil
 }
 
